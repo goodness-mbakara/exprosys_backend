@@ -1,0 +1,4 @@
+.venv
+migrations/*
+db.slite3
+.env
