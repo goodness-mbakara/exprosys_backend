@@ -1,4 +1,5 @@
 .venv
 migrations/*
-db.slite3
+db.sqlite3
 .env
+exprosys_app/migrations/
