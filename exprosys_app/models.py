@@ -46,3 +46,30 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+class Container(models.Model):
+    CONTAINER_SIZES = [('20', '20 feet'), ('40', '40 feet')]
+    CONTAINER_TYPES = [('standard', 'Standard'), ('reefer', 'Reefer')]
+    STATUS_CHOICES = [('in transit', 'In Transit'), ('at port', 'At Port'), ('delivered', 'Delivered')]
+
+    container_id = models.CharField(max_length=20, unique=True)
+    container_size = models.CharField(max_length=10)
+    container_type = models.CharField(max_length=20)
+    status = models.CharField(max_length=20)
+    current_location = models.CharField(max_length=100)
+    origin = models.CharField(max_length=100)
+    booking_number = models.CharField(max_length=50)
+    estimated_arrival = models.DateField()
+    shipping_line = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.container_id
+
+class ContainerEvent(models.Model):
+    container = models.ForeignKey(Container, related_name='events', on_delete=models.CASCADE)
+    event_date = models.DateField()
+    description = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.container.container_id} - {self.description}"
