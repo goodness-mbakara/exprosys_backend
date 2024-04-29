@@ -1,13 +1,50 @@
 from rest_framework_simplejwt.views import TokenObtainPairView
 from ..serializers.token_obtain_serializer import CustomTokenObtainPairSerializer, ChangePasswordSerializer, PasswordRecoverySerializer
-
+from rest_framework import serializers
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 User = get_user_model()
+
+
+class UserSerializer(serializers.ModelSerializer):
+    isAdmin = serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model = User
+        fields = ['id','email','username','full_name', 'first_name','last_name','user_type','bio','phone','is_verified','isAdmin','is_active']
+
+    def get_isAdmin(self,obj):
+        return obj.is_staff
+
+class UserSerializerWithToken(UserSerializer):
+    token = serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model = User
+        fields = ['username','email','first_name','last_name', 'token']
+
+    def get_token(self, obj):
+        token =RefreshToken.for_user(obj)
+        return str(token.access_token)
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        serializer = UserSerializerWithToken(self.user).data
+        for k, v in serializer.items():
+            data[k] = v
+
+        return data
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
 
 class LoginView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer

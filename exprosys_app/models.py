@@ -8,6 +8,7 @@ class CustomUserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(email=email, username=username, **extra_fields)
         user.set_password(password)
+        #user.is_active = True
         user.save()
         return user
 
@@ -36,6 +37,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     account_recovery_phone = models.CharField(max_length=15)
     account_recovery_question = models.CharField(max_length=255)
     account_recovery_answer = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
