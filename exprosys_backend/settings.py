@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-f)zm@zpgj9q=mfdu%eo)2wuugjyh2qq1d^*w--gwz$=*q21%34
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['exprosys-backend.onrender.com', 'localhost']
+ALLOWED_HOSTS = ['exprosys-backend.onrender.com', 'localhost', "127.0.0.1"]
 
 
 # Application definition

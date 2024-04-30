@@ -1,5 +1,5 @@
 from rest_framework import generics
-from ..models import Container
+from ..models import Container, ContainerEvent
 from ..serializers.container_serializers import ContainerSerializer, ContainerEventSerializer
 
 class ContainerListCreateAPIView(generics.ListCreateAPIView):
