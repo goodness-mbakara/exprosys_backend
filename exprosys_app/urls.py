@@ -2,7 +2,9 @@ from django.urls import path
 from .apis.register_api import RegisterView
 
 from .apis.login_api import LoginView, ChangePasswordView, RecoverPasswordView, MyTokenObtainPairView
-from .apis.containers_api import ContainerListCreateAPIView, ContainerRetrieveUpdateDestroyAPIView, ContainerEventListCreateAPIView
+from .apis.containers_api import (
+    ContainerListCreateAPIView, ContainerRetrieveUpdateDestroyAPIView, 
+    ContainerEventListCreateAPIView, ContainerStatusAPIView,ContainerTransferAPIView)
 
 
 urlpatterns = [
@@ -13,4 +15,6 @@ urlpatterns = [
     path('containers/', ContainerListCreateAPIView.as_view(), name='container-list-create'),
     path('containers/<str:container_id>/', ContainerRetrieveUpdateDestroyAPIView.as_view(), name='container-detail'),
     path('containers/<str:container_id>/events/', ContainerEventListCreateAPIView.as_view(), name='container-events-list-create'),
+    path('container-status/<str:container_id>/', ContainerStatusAPIView.as_view(), name='container-status'),
+    path('container-transfer/', ContainerTransferAPIView.as_view(), name='container-transfer'),
 ]

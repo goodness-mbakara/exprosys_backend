@@ -53,7 +53,7 @@ class Container(models.Model):
     CONTAINER_TYPES = [('standard', 'Standard'), ('reefer', 'Reefer')]
     STATUS_CHOICES = [('in transit', 'In Transit'), ('at port', 'At Port'), ('delivered', 'Delivered')]
 
-    container_id = models.CharField(max_length=20, unique=True)
+    container_id = models.CharField(max_length=20, unique=True, primary_key=True)
     container_size = models.CharField(max_length=10)
     container_type = models.CharField(max_length=20)
     status = models.CharField(max_length=20)
@@ -73,3 +73,14 @@ class ContainerEvent(models.Model):
 
     def __str__(self):
         return f"{self.container.container_id} - {self.description}"
+
+class ContainerTransfer(models.Model):
+    container = models.ForeignKey("Container", related_name='transfers', on_delete=models.CASCADE)
+    transfer_from = models.CharField(max_length=100)
+    transfer_to = models.CharField(max_length=100)
+    transfer_date = models.DateField()
+    confirmation_code = models.CharField(max_length=50)
+    reasons_for_transfer = models.TextField()
+
+    def __str__(self):
+        return f"Transfer of {self.container.container_id} from {self.transfer_from} to {self.transfer_to}"
