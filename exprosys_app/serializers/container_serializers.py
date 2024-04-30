@@ -41,3 +41,13 @@ class ContainerTransferSerializer(serializers.ModelSerializer):
         container.save()
 
         return container_transfer
+
+class ContainerListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Container
+        fields = ['container_id', 'status', 'container_type', 'arrival_date', 'departure_date', 'vessel_name', 'customer_name']
+
+class ManageContainerDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Container
+        fields = ['container_id', 'arrival_date', 'departure_date', 'origin', 'destination', 'status', 'vessel_assignment', 'cargo_type', 'last_update', 'estimated_time_of_arrival']

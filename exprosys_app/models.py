@@ -60,8 +60,17 @@ class Container(models.Model):
     current_location = models.CharField(max_length=100)
     origin = models.CharField(max_length=100)
     booking_number = models.CharField(max_length=50)
-    estimated_arrival = models.DateField()
     shipping_line = models.CharField(max_length=100)
+    arrival_date = models.DateField(null=True, blank=True)
+    departure_date = models.DateField(null=True, blank=True)
+    vessel_name = models.CharField(max_length=100, null=True, blank=True)
+    customer_name = models.CharField(max_length=100, null=True, blank=True)
+    destination = models.CharField(max_length=100, null=True, blank = True)
+    vessel_assignment = models.CharField(max_length=100, default='Not assigned', null=True, blank = True)
+    cargo_type = models.CharField(max_length=50, default='general', null=True, blank = True)
+    last_update = models.DateTimeField(auto_now=True, null=True, blank = True)
+    estimated_time_of_arrival = models.DateTimeField(null=True, blank=True)
+
 
     def __str__(self):
         return self.container_id

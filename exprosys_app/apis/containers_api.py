@@ -1,9 +1,11 @@
 from rest_framework import generics
 from ..models import Container, ContainerEvent, ContainerTransfer
 from rest_framework.views import APIView
+from rest_framework import status
 from rest_framework.response import Response
 from ..serializers.container_serializers import (
-    ContainerSerializer, ContainerEventSerializer, ContainerDetailSerializer, ContainerTransferSerializer
+    ContainerSerializer, ContainerEventSerializer, 
+    ContainerDetailSerializer, ContainerTransferSerializer, ContainerListSerializer, ManageContainerDetailSerializer
 )
 
 class ContainerListCreateAPIView(generics.ListCreateAPIView):
@@ -43,3 +45,17 @@ class ContainerStatusAPIView(APIView):
 class ContainerTransferAPIView(generics.CreateAPIView):
     queryset = ContainerTransfer.objects.all()
     serializer_class = ContainerTransferSerializer
+
+
+class ContainerListView(generics.ListAPIView):
+    queryset = Container.objects.all()
+    serializer_class = ContainerListSerializer
+
+class ContainerDetailView(APIView):
+    def get(self, request, container_id):
+        container = Container.objects.filter(container_id=container_id).first()
+        if container:
+            serializer = ManageContainerDetailSerializer(container)
+            return Response(serializer.data)
+        else:
+            return Response({'error': 'Container not found'}, status=status.HTTP_404_NOT_FOUND)
