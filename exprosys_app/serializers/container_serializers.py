@@ -12,14 +12,14 @@ class ContainerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Container
-        fields = ['container_id', 'container_size', 'container_type', 'status', 'current_location', 'origin', 'booking_number', 'estimated_arrival', 'shipping_line', 'events']
+        fields = ['container_id', 'container_size', 'container_type', 'status', 'current_location', 'origin', 'booking_number', 'estimated_time_of_arrival', 'shipping_line', 'events']
 
 class ContainerDetailSerializer(serializers.ModelSerializer):
     events = ContainerEventSerializer(many=True, read_only=True)
 
     class Meta:
         model = Container
-        fields = ['container_id', 'container_type', 'current_location', 'status', 'origin', 'booking_number', 'estimated_arrival', 'shipping_line', 'events']
+        fields = ['container_id', 'container_type', 'current_location', 'status', 'origin', 'booking_number', 'estimated_time_of_arrival', 'shipping_line', 'events']
 
 class ContainerTransferSerializer(serializers.ModelSerializer):
     class Meta:
