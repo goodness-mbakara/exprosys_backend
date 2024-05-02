@@ -93,3 +93,38 @@ class ContainerTransfer(models.Model):
 
     def __str__(self):
         return f"Transfer of {self.container.container_id} from {self.transfer_from} to {self.transfer_to}"
+
+
+
+class Customer(models.Model):
+    customer_id = models.CharField(max_length=20, unique=True)
+    customer_name = models.CharField(max_length=100)
+    contact_person = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+    address = models.CharField(max_length=255)
+    city = models.CharField(max_length=100)
+    state_province = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=20)
+    country = models.CharField(max_length=100)
+    account_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    credit_limit = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    payment_terms = models.CharField(max_length=100)
+    credit_status = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.customer_name
+
+class Transaction(models.Model):
+    TRANSACTION_TYPE_CHOICES = [
+        ('invoice', 'Invoice'),
+        ('payment', 'Payment'),
+    ]
+    customer = models.ForeignKey(Customer, related_name='transactions', on_delete=models.CASCADE)
+    date = models.DateTimeField()
+    invoice_number = models.CharField(max_length=50)
+    transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPE_CHOICES)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.invoice_number} - {self.transaction_type}"
