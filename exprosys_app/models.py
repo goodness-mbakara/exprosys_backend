@@ -170,3 +170,64 @@ class Agent(models.Model):
     services_offered = models.CharField(max_length=255, null = True, blank =True)
     def __str__(self):
         return self.agent_name
+
+
+class GateAccessControl(models.Model):
+    time_of_access = models.DateTimeField()
+    gate_entry_point = models.CharField(max_length=100)
+    security_officer_name = models.CharField(max_length=100)
+    security_officer_id = models.CharField(max_length=50)
+    vehicle_number = models.CharField(max_length=50)
+    booking_verification_number = models.CharField(max_length=100)
+    access_type = models.CharField(max_length=50)
+    authorized_exit_time = models.DateTimeField()
+    authorized_areas = models.TextField()
+    reason_for_access = models.TextField()
+    purpose_of_visit = models.TextField()
+    destination = models.TextField()
+    security_checkpoint_1 = models.CharField(max_length=100)
+    inspection_result = models.CharField(max_length=100)
+    access_granted = models.BooleanField()
+    access_denied_reason = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.vehicle_number
+
+
+class InboundPreGateEntry(models.Model):
+    container_id = models.CharField(max_length=100)
+    eto_gate_pass_no = models.CharField(max_length=100)
+    gate_in_date = models.DateField()
+    license_plate_number = models.CharField(max_length=50)
+    driver_name = models.CharField(max_length=100)
+    driver_number = models.CharField(max_length=50)
+    company_organization = models.CharField(max_length=100)
+    security_checks = models.JSONField()  # assuming a JSON to store various checks
+
+    def __str__(self):
+        return self.container_id
+
+class OutboundGateExit(models.Model):
+    container_id = models.CharField(max_length=100)
+    truck_number = models.CharField(max_length=50, unique = True)
+    driver_name = models.CharField(max_length=100)
+    driver_contact = models.CharField(max_length=50)
+    destination = models.CharField(max_length=100)
+    journey_code = models.CharField(max_length=100, blank=True, null=True)
+    last_payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    validity_date = models.DateField()
+    gate_out_officer = models.CharField(max_length=100)
+    security_checks = models.BooleanField(default=False)
+    def __str__(self):
+        return f"{self.truck_number} - {self.container_id}"
+
+class TruckQueueManagement(models.Model):
+    truck_id = models.CharField(max_length=50, unique = True)
+    company_organization = models.CharField(max_length=100)
+    driver_name = models.CharField(max_length=100)
+    driver_phone_number = models.CharField(max_length=50)
+    priority = models.CharField(max_length=10)  # e.g., High, Medium, Low
+    status = models.CharField(max_length=50)  # e.g., Waiting, Loading, Departed
+
+    def __str__(self):
+        return f"{self.truck_id} - {self.driver_name}"

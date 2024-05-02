@@ -35,4 +35,5 @@ urlpatterns = [
     path('agents/', AgentListView.as_view(), name='agent-list'),
     path('agents/<str:agent_id>/', AgentDetailView.as_view(), name='agent-detail'),
     path('agents/<str:agent_id>/update/', AgentUpdateView.as_view(), name='agent-update'),
+    
 ]
