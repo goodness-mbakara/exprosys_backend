@@ -9,6 +9,7 @@ from .apis.containers_api import (
 
 from .apis.customer_api import CustomerListCreateAPIView, CustomerDetailView
 from .apis.agency_apis import AgencyCreateView, AgencyListView, AgencyDetailView
+from .apis.agent_api import AgentCreateView, AgentListView, AgentDetailView, AgentUpdateView
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
@@ -29,4 +30,9 @@ urlpatterns = [
     path('agency/', AgencyCreateView.as_view(), name='agency-create'),
     path('agency-list/', AgencyListView.as_view(), name='agency-list'),
     path('agency/<str:agency_id>/', AgencyDetailView.as_view(), name='agency-detail'),
+    #agent endpoints
+    path('agents/create/', AgentCreateView.as_view(), name='agent-create'),
+    path('agents/', AgentListView.as_view(), name='agent-list'),
+    path('agents/<str:agent_id>/', AgentDetailView.as_view(), name='agent-detail'),
+    path('agents/<str:agent_id>/update/', AgentUpdateView.as_view(), name='agent-update'),
 ]
