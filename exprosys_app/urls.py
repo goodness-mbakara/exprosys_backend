@@ -8,7 +8,7 @@ from .apis.containers_api import (
     ContainerTransferAPIView, ContainerListView, ContainerDetailView)
 
 from .apis.customer_api import CustomerListCreateAPIView, CustomerDetailView
-
+from .apis.agency_apis import AgencyCreateView, AgencyListView, AgencyDetailView
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
@@ -25,4 +25,8 @@ urlpatterns = [
     #customer endpoints
     path('customers/', CustomerListCreateAPIView.as_view(), name='customer-list-create'),
     path('customers/<str:customer_id>/', CustomerDetailView.as_view(), name='customer-detail'),
+    #agency endpoints
+    path('agency/', AgencyCreateView.as_view(), name='agency-create'),
+    path('agency-list/', AgencyListView.as_view(), name='agency-list'),
+    path('agency/<str:agency_id>/', AgencyDetailView.as_view(), name='agency-detail'),
 ]
