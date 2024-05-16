@@ -13,6 +13,9 @@ from .apis.agent_api import AgentCreateView, AgentListView, AgentDetailView, Age
 from .apis.truck_apis import TruckQueueManagementListCreateView,get_queue_metrics, TruckQueueManagementDetailView
 from .apis.gate_apis import (GateAccessControlListCreateView,GateAccessControlDetailView,
     InboundPreGateEntryListCreateView,InboundPreGateEntryDetailView,OutboundGateExitListCreateView,OutboundGateExitDetailView)
+from .apis.cointainer_cycle_apis import ContainerCycleManagementListCreateView,ContainerCycleManagementDetailView
+from .apis.equipment_interchange_apis import (ProcessEquipmentInterchangeListCreateView,ProcessEquipmentInterchangeDetailView,EquipmentInterchangeReceiptListCreateView,EquipmentInterchangeReceiptDetailView,)
+
 urlpatterns = [
     #auth endpoints
     path('register/', RegisterView.as_view(), name='register'),
@@ -52,4 +55,14 @@ urlpatterns = [
 
     path('outbound-gate-exits/', OutboundGateExitListCreateView.as_view(), name='outbound-gate-exit-list-create'),
     path('outbound-gate-exits/<int:pk>/', OutboundGateExitDetailView.as_view(), name='outbound-gate-exit-detail'),
+    
+    #container cycle endpoints
+    path('container-cycle/', ContainerCycleManagementListCreateView.as_view(), name='container-cycle-list'),
+    path('container-cycle/<int:pk>/', ContainerCycleManagementDetailView.as_view(), name='container-cycle-detail'),
+    
+    #equipment interchange endpoints
+    path('equipment-interchange/', ProcessEquipmentInterchangeListCreateView.as_view(), name='equipment-interchange-list'),
+    path('equipment-interchange/<int:pk>/', ProcessEquipmentInterchangeDetailView.as_view(), name='equipment-interchange-detail'),
+    path('interchange-receipt/', EquipmentInterchangeReceiptListCreateView.as_view(), name='interchange-receipt-list'),
+    path('interchange-receipt/<int:pk>/', EquipmentInterchangeReceiptDetailView.as_view(), name='interchange-receipt-detail'),
 ]

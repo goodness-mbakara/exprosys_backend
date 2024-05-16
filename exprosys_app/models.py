@@ -251,3 +251,85 @@ class TruckQueueManagement(models.Model):
     def __str__(self):
         return f"{self.truck_id} - {self.driver_name}"
 
+
+class ContainerCycleManagement(models.Model):
+    CYCLE_TYPES = [
+        ('Export Delivery', 'Export Delivery'),
+        ('Import Receipt', 'Import Receipt'),
+        ('Empty Return', 'Empty Return'),
+    ]
+    cycle_type = models.CharField(max_length=50, choices=CYCLE_TYPES)
+    destination_terminal = models.CharField(max_length=100)
+    booking_number = models.CharField(max_length=50)
+    delivery_date = models.DateField()
+    eir_number = models.CharField(max_length=50)
+    container_list = models.TextField()
+    update_container_cycle = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.cycle_type} - {self.booking_number}"
+
+
+class ProcessEquipmentInterchange(models.Model):
+    CONTAINER_PART_CHOICES = [
+        ('All Over', 'All Over'),
+        ('Top', 'Top'),
+        ('Side', 'Side'),
+    ]
+    EXPORT_TYPE_CHOICES = [
+        ('Full', 'Full'),
+        ('Empty', 'Empty'),
+    ]
+    container_id = models.CharField(max_length=50)
+    container_part = models.CharField(max_length=50, choices=CONTAINER_PART_CHOICES)
+    transport_id = models.CharField(max_length=50)
+    driver_id = models.CharField(max_length=50)
+    export_type = models.CharField(max_length=50, choices=EXPORT_TYPE_CHOICES)
+    damage_status = models.CharField(max_length=50)
+    customer_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.container_id} - {self.customer_name}"
+
+
+class EquipmentInterchangeReceipt(models.Model):
+    INTERCHANGE_TYPES = [
+        ('Incoming', 'Incoming'),
+        ('Outgoing', 'Outgoing'),
+    ]
+    INTERCHANGE_PARTIES = [
+        ('Carrier', 'Carrier'),
+        ('Shipper', 'Shipper'),
+        ('Receiver', 'Receiver'),
+        ('Other', 'Other'),
+    ]
+    voyage_details_vessel_name = models.CharField(max_length=100)
+    voyage_details_voyage_number = models.CharField(max_length=50)
+    voyage_details_port_of_loading = models.CharField(max_length=100)
+    voyage_details_port_of_discharge = models.CharField(max_length=100)
+    voyage_details_estimated_arrival_date = models.DateField()
+    voyage_details_estimated_departure_date = models.DateField()
+    shipper_name = models.CharField(max_length=100)
+    shipper_address = models.CharField(max_length=255)
+    shipper_contact_person = models.CharField(max_length=100)
+    interchange_type = models.CharField(max_length=50, choices=INTERCHANGE_TYPES)
+    interchange_party = models.CharField(max_length=50, choices=INTERCHANGE_PARTIES)
+    interchange_contact = models.CharField(max_length=100)
+    interchange_reference_number = models.CharField(max_length=50)
+    condition_inspection_overall_condition = models.CharField(max_length=100)
+    condition_inspection_inspection_result = models.CharField(max_length=100)
+    condition_inspection_inspection_date = models.DateField()
+    equipment_id_number = models.CharField(max_length=50)
+    equipment_type = models.CharField(max_length=50)
+    equipment_size = models.CharField(max_length=50)
+    equipment_status = models.CharField(max_length=100)
+    equipment_condition_exterior = models.CharField(max_length=100)
+    equipment_condition_interior = models.CharField(max_length=100)
+    equipment_condition_floor = models.CharField(max_length=100)
+    location_terminal_name = models.CharField(max_length=100)
+    location_terminal_location = models.CharField(max_length=255)
+    location_date_of_interchange = models.DateField()
+    prepared_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.equipment_id_number} - {self.interchange_reference_number}"
