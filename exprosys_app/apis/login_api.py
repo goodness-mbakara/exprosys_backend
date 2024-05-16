@@ -3,6 +3,7 @@ from ..serializers.token_obtain_serializer import CustomTokenObtainPairSerialize
 from rest_framework import serializers
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -27,6 +28,12 @@ class UserSerializerWithToken(UserSerializer):
     class Meta:
         model = User
         fields = ['username','email','first_name','last_name', 'token']
+        extra_kwargs = {
+            'username': {'required': False},
+            'email': {'required': False},
+            'first_name': {'required': False},
+            'last_name': {'required': False},
+        }
 
     def get_token(self, obj):
         token =RefreshToken.for_user(obj)
@@ -42,12 +49,13 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return data
 
-
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
+
 class LoginView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+    permission_classes = [AllowAny]
 
 
 class ChangePasswordView(generics.UpdateAPIView):

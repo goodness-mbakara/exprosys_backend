@@ -7,11 +7,17 @@ from django.contrib.auth.password_validation import validate_password
 User = get_user_model()
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    def validate(self, attrs):
-        data = super().validate(attrs)
-        data.update({'username': self.user.username})
-        data.update({'email': self.user.email})
-        return data
+    #super().email = serializers.EmailField(required=False)
+    #credential = serializers.CharField(required=False)
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims to the token
+        token['username'] = user.username
+        token['email'] = user.email
+
+        return token
 
 
 class ChangePasswordSerializer(serializers.Serializer):

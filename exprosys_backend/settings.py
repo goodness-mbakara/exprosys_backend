@@ -147,8 +147,9 @@ SIMPLE_JWT = {
 }
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',  # Default backend
-    # You can add other authentication backends as needed
+    'exprosys_backend.custom_auth_backend.EmailOrUsernameModelBackend',
+    'django.contrib.auth.backends.ModelBackend',  #Defaukt auth backend
+    
 ]
 
 MEDIA_URL = '/media/'
