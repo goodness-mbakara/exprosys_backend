@@ -11,6 +11,9 @@ from rest_framework import status
 class TruckQueueManagementListCreateView(generics.ListCreateAPIView):
     queryset = TruckQueueManagement.objects.all()
     serializer_class = TruckQueueManagementSerializer
+    
+    def get_queryset(self):
+       return TruckQueueManagement.objects.exclude(status="Departed")
 
 class TruckQueueManagementDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = TruckQueueManagement.objects.all()
