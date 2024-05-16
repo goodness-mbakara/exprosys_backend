@@ -1,4 +1,4 @@
-from ..models import TruckQueueManagement
+from ..models import TruckQueueManagement, Container
 from ..serializers.truck_serializers import TruckQueueManagementSerializer
 from django.db.models import Avg, Count, F, Q
 import datetime
@@ -14,10 +14,68 @@ class TruckQueueManagementListCreateView(generics.ListCreateAPIView):
     
     def get_queryset(self):
        return TruckQueueManagement.objects.exclude(status="Departed")
+   
+    def post(self, request, *args, **kwargs):
+        merge_containers = request.data.get('merge_containers', '')
+        assigned_terminal = request.data.get('assigned_terminal', '')
+
+        # Split merge_containers string into individual container IDs
+        container_ids = merge_containers.split(',') if merge_containers else []
+
+        # Get or create Container instances for each container ID
+        containers = []
+        for container_id in container_ids:
+            container, _ = Container.objects.get_or_create(container_id=container_id.strip())
+            containers.append(container)
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+
+        # Assign containers to the TruckQueueManagement instance
+        instance = serializer.instance
+        instance.merge_containers = merge_containers
+        instance.assigned_terminal = assigned_terminal
+        instance.save()
+
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 class TruckQueueManagementDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = TruckQueueManagement.objects.all()
     serializer_class = TruckQueueManagementSerializer
+    lookup_field = 'truck_id'
+    
+    def put(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        merge_containers = request.data.get('merge_containers', '')
+        assigned_terminal = request.data.get('assigned_terminal', '')
+
+        # Split merge_containers string into individual container IDs
+        container_ids = merge_containers.split(',') if merge_containers else []
+
+        # Get or create Container instances for each container ID
+        containers = []
+        for container_id in container_ids:
+            container, _ = Container.objects.get_or_create(container_id=container_id.strip())
+            containers.append(container)
+
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        # Assign containers to the TruckQueueManagement instance
+        instance.merge_containers = merge_containers
+        instance.assigned_terminal = assigned_terminal
+        instance.save()
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
 
 def format_time(time_delta):
     if time_delta is None:

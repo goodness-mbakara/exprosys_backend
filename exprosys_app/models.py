@@ -181,15 +181,18 @@ class GateAccessControl(models.Model):
     vehicle_number = models.CharField(max_length=50)
     booking_verification_number = models.CharField(max_length=100)
     access_type = models.CharField(max_length=50)
-    authorized_exit_time = models.DateTimeField()
+    authorized_exit_time = models.DateTimeField( null =True, blank = True)
     authorized_areas = models.TextField()
     reason_for_access = models.TextField()
     purpose_of_visit = models.TextField()
     destination = models.TextField()
-    security_checkpoint_1 = models.CharField(max_length=100)
-    inspection_result = models.CharField(max_length=100)
-    access_granted = models.BooleanField()
+    security_checkpoints = models.CharField(max_length=250, null =True, blank = True)
+    inspection_result = models.CharField(max_length=100, null =True, blank = True)
+    access_granted = models.BooleanField(default=False)
     access_denied_reason = models.TextField(blank=True, null=True)
+    security_code = models.CharField(max_length=100, null =True, blank = True)
+    vehicle_type = models.CharField(max_length=50, null =True, blank = True)
+    drivers = models.CharField(max_length=100, null =True, blank = True)
 
     def __str__(self):
         return self.vehicle_number
@@ -241,6 +244,9 @@ class TruckQueueManagement(models.Model):
     status = models.CharField(max_length=50)  # e.g., Waiting, Loading, Departed
     created_at = models.DateTimeField(auto_now_add = True, null = True, blank =True)
     updated_at = models.DateTimeField(auto_now=True, null = True, blank =True)
+    merge_containers = models.CharField(max_length=255, blank=True)
+    assigned_terminal = models.CharField(max_length=100, blank=True)
+
 
     def __str__(self):
         return f"{self.truck_id} - {self.driver_name}"

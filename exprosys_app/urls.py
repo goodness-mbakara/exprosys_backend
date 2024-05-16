@@ -11,12 +11,15 @@ from .apis.customer_api import CustomerListCreateAPIView, CustomerDetailView
 from .apis.agency_apis import AgencyCreateView, AgencyListView, AgencyDetailView
 from .apis.agent_api import AgentCreateView, AgentListView, AgentDetailView, AgentUpdateView
 from .apis.truck_apis import TruckQueueManagementListCreateView,get_queue_metrics, TruckQueueManagementDetailView
-
+from .apis.gate_apis import (GateAccessControlListCreateView,GateAccessControlDetailView,
+    InboundPreGateEntryListCreateView,InboundPreGateEntryDetailView,OutboundGateExitListCreateView,OutboundGateExitDetailView)
 urlpatterns = [
+    #auth endpoints
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', MyTokenObtainPairView.as_view(),name='token_obtain_pair'),
     path('change-password/', ChangePasswordView.as_view(), name='change_password'),
     path('recover-password/', RecoverPasswordView.as_view(), name='recover_password'),
+    #container endpoint
     path('containers/', ContainerListCreateAPIView.as_view(), name='container-list-create'),
     path('containers/<str:container_id>/', ContainerRetrieveUpdateDestroyAPIView.as_view(), name='container-detail'),
     path('containers/<str:container_id>/events/', ContainerEventListCreateAPIView.as_view(), name='container-events-list-create'),
@@ -40,4 +43,13 @@ urlpatterns = [
     path('trucks/', TruckQueueManagementListCreateView.as_view(), name='truck-list-create'),
     path('trucks/<str:truck_id>/', TruckQueueManagementDetailView.as_view(), name='truck-detail'),
     path('queue-metrics/', get_queue_metrics, name='queue-metrics'),    
+    #gate endpoints
+    path('gate-access-controls/', GateAccessControlListCreateView.as_view(), name='gate-access-control-list-create'),
+    path('gate-access-controls/<int:pk>/', GateAccessControlDetailView.as_view(), name='gate-access-control-detail'),
+
+    path('inbound-pre-gate-entries/', InboundPreGateEntryListCreateView.as_view(), name='inbound-pre-gate-entry-list-create'),
+    path('inbound-pre-gate-entries/<int:pk>/', InboundPreGateEntryDetailView.as_view(), name='inbound-pre-gate-entry-detail'),
+
+    path('outbound-gate-exits/', OutboundGateExitListCreateView.as_view(), name='outbound-gate-exit-list-create'),
+    path('outbound-gate-exits/<int:pk>/', OutboundGateExitDetailView.as_view(), name='outbound-gate-exit-detail'),
 ]
