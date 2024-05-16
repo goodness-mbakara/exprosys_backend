@@ -1,6 +1,11 @@
 from rest_framework import generics
-from ..models import GateAccessControl, InboundPreGateEntry,OutboundGateExit, TruckQueueManagement
-from ..serializers.gate_serializers import GateAccessControlSerializer, InboundPreGateEntrySerializer,OutboundGateExitSerializer,TruckQueueManagementSerializer
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import status
+from ..models import GateAccessControl, InboundPreGateEntry,OutboundGateExit
+from ..serializers.gate_serializers import GateAccessControlSerializer, InboundPreGateEntrySerializer,OutboundGateExitSerializer
+from django.db.models import Avg, Count, F, Q
+from datetime import datetime, timedelta
 
 class GateAccessControlListCreateView(generics.ListCreateAPIView):
     queryset = GateAccessControl.objects.all()
@@ -25,12 +30,3 @@ class OutboundGateExitListCreateView(generics.ListCreateAPIView):
 class OutboundGateExitDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = OutboundGateExit.objects.all()
     serializer_class = OutboundGateExitSerializer
-
-class TruckQueueManagementListCreateView(generics.ListCreateAPIView):
-    queryset = TruckQueueManagement.objects.all()
-    serializer_class = TruckQueueManagementSerializer
-
-class TruckQueueManagementDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = TruckQueueManagement.objects.all()
-    serializer_class = TruckQueueManagementSerializer
-

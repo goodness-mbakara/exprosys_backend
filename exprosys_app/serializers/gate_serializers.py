@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import GateAccessControl, InboundPreGateEntry,OutboundGateExit, TruckQueueManagement
+from ..models import GateAccessControl, InboundPreGateEntry,OutboundGateExit
 
 class GateAccessControlSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,8 +17,5 @@ class OutboundGateExitSerializer(serializers.ModelSerializer):
         model = OutboundGateExit
         fields = '__all__'
 
-class TruckQueueManagementSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TruckQueueManagement
-        fields = '__all__'
+
 

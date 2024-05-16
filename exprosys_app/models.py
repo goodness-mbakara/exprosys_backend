@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-from django.db import models
+from django.db import models 
 
+from datetime import timezone
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, username, password=None, **extra_fields):
         if not email:
@@ -202,7 +203,9 @@ class InboundPreGateEntry(models.Model):
     driver_name = models.CharField(max_length=100)
     driver_number = models.CharField(max_length=50)
     company_organization = models.CharField(max_length=100)
-    security_checks = models.JSONField()  # assuming a JSON to store various checks
+    hazardous_material_check = models.BooleanField(default = False)
+    security_clearance_check = models.BooleanField(default = False)
+    temperature_senstive_cargo = models.BooleanField(default = False)
 
     def __str__(self):
         return self.container_id
@@ -212,12 +215,20 @@ class OutboundGateExit(models.Model):
     truck_number = models.CharField(max_length=50, unique = True)
     driver_name = models.CharField(max_length=100)
     driver_contact = models.CharField(max_length=50)
+    documentation_verification = models.BooleanField(default = False)
+    cargo_inspection = models.BooleanField(default = False)
+    driver_verification = models.BooleanField(default = False)
     destination = models.CharField(max_length=100)
     journey_code = models.CharField(max_length=100, blank=True, null=True)
     last_payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
     validity_date = models.DateField()
-    gate_out_officer = models.CharField(max_length=100)
-    security_checks = models.BooleanField(default=False)
+    gate_out_officer = models.CharField(max_length=100, null=True,blank=True)
+    seal_information = models.CharField(max_length=100, null=True,blank=True)
+    seal_condition = models.CharField(max_length=50, null=True,blank=True)
+    security_check = models.BooleanField(default=False, null=True,blank=True)
+    security_check_note = models.CharField(max_length = 100, null=True,blank=True)
+    security_code = models.CharField(max_length=100, null=True,blank=True)
+    date_time = models.DateTimeField(null=True, blank = True)
     def __str__(self):
         return f"{self.truck_number} - {self.container_id}"
 
@@ -228,6 +239,9 @@ class TruckQueueManagement(models.Model):
     driver_phone_number = models.CharField(max_length=50)
     priority = models.CharField(max_length=10)  # e.g., High, Medium, Low
     status = models.CharField(max_length=50)  # e.g., Waiting, Loading, Departed
+    created_at = models.DateTimeField(auto_now_add = True, null = True, blank =True)
+    updated_at = models.DateTimeField(auto_now=True, null = True, blank =True)
 
     def __str__(self):
         return f"{self.truck_id} - {self.driver_name}"
+

@@ -10,6 +10,7 @@ from .apis.containers_api import (
 from .apis.customer_api import CustomerListCreateAPIView, CustomerDetailView
 from .apis.agency_apis import AgencyCreateView, AgencyListView, AgencyDetailView
 from .apis.agent_api import AgentCreateView, AgentListView, AgentDetailView, AgentUpdateView
+from .apis.truck_apis import TruckQueueManagementListCreateView,get_queue_metrics, TruckQueueManagementDetailView
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
@@ -35,5 +36,8 @@ urlpatterns = [
     path('agents/', AgentListView.as_view(), name='agent-list'),
     path('agents/<str:agent_id>/', AgentDetailView.as_view(), name='agent-detail'),
     path('agents/<str:agent_id>/update/', AgentUpdateView.as_view(), name='agent-update'),
-    
+    #truck endpoints
+    path('trucks/', TruckQueueManagementListCreateView.as_view(), name='truck-list-create'),
+    path('trucks/<str:truck_id>/', TruckQueueManagementDetailView.as_view(), name='truck-detail'),
+    path('queue-metrics/', get_queue_metrics, name='queue-metrics'),    
 ]
