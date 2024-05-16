@@ -40,8 +40,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     account_recovery_answer = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    USERNAME_FIELD =  'username'
+    #REQUIRED_FIELDS = ['username']
 
     objects = CustomUserManager()
 
