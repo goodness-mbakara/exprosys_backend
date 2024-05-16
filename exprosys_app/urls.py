@@ -15,7 +15,8 @@ from .apis.gate_apis import (GateAccessControlListCreateView,GateAccessControlDe
     InboundPreGateEntryListCreateView,InboundPreGateEntryDetailView,OutboundGateExitListCreateView,OutboundGateExitDetailView)
 from .apis.cointainer_cycle_apis import ContainerCycleManagementListCreateView,ContainerCycleManagementDetailView
 from .apis.equipment_interchange_apis import (ProcessEquipmentInterchangeListCreateView,ProcessEquipmentInterchangeDetailView,EquipmentInterchangeReceiptListCreateView,EquipmentInterchangeReceiptDetailView,)
-
+from .apis.invoice_apis import  PostExportInvoiceCreateView,PostPaymentCreateView,InvoicePostingReportDetailView
+from .apis.booked_container_apis import BookedContainerListView
 urlpatterns = [
     #auth endpoints
     path('register/', RegisterView.as_view(), name='register'),
@@ -65,4 +66,10 @@ urlpatterns = [
     path('equipment-interchange/<int:pk>/', ProcessEquipmentInterchangeDetailView.as_view(), name='equipment-interchange-detail'),
     path('interchange-receipt/', EquipmentInterchangeReceiptListCreateView.as_view(), name='interchange-receipt-list'),
     path('interchange-receipt/<int:pk>/', EquipmentInterchangeReceiptDetailView.as_view(), name='interchange-receipt-detail'),
+    
+    #invoice endpoints
+    path('booked-containers/', BookedContainerListView.as_view(), name='booked-containers'),
+    path('post-export-invoice/', PostExportInvoiceCreateView.as_view(), name='post-export-invoice'),
+    path('post-payment/', PostPaymentCreateView.as_view(), name='post-payment'),
+    path('invoice-posting-report/<int:pk>/', InvoicePostingReportDetailView.as_view(), name='invoice-posting-report'),
 ]

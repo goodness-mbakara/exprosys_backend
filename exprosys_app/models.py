@@ -333,3 +333,42 @@ class EquipmentInterchangeReceipt(models.Model):
 
     def __str__(self):
         return f"{self.equipment_id_number} - {self.interchange_reference_number}"
+
+class BookedContainer(models.Model):
+    container_number = models.CharField(max_length=20)
+    customer_name = models.CharField(max_length=100)
+    contact_person = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+    address = models.CharField(max_length=255)
+
+class PostExportInvoice(models.Model):
+    container_number = models.CharField(max_length=20)
+    customer_name = models.CharField(max_length=100)
+    invoice_date = models.DateField()
+    export_handling_fees = models.DecimalField(max_digits=10, decimal_places=2)
+    storage_charges = models.DecimalField(max_digits=10, decimal_places=2)
+    haulage = models.DecimalField(max_digits=10, decimal_places=2)
+    invoice_number = models.CharField(max_length=50)
+    total_amount_due = models.DecimalField(max_digits=10, decimal_places=2)
+    services_type = models.CharField(max_length=100)
+    discounts_or_adjustments = models.DecimalField(max_digits=10, decimal_places=2)
+    rated_upto_date = models.DateField()
+
+class PostPayment(models.Model):
+    container_number = models.CharField(max_length=20)
+    customer_name = models.CharField(max_length=100)
+    payment_date = models.DateField()
+    invoice_number = models.CharField(max_length=50)
+    total_amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
+    services_type = models.CharField(max_length=100)
+    confirmation_officer = models.CharField(max_length=100)
+    payment_remarks = models.TextField()
+    payment_receipt = models.FileField(upload_to='payment_receipts/')
+
+class InvoicePostingReport(models.Model):
+    container_number = models.CharField(max_length=20)
+    customer_name = models.CharField(max_length=100)
+    contact_person = models.CharField(max_length=100)
+    email = models.EmailField()
+    amount_payment_status = models.CharField(max_length=50)
