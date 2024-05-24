@@ -148,24 +148,24 @@ class Transaction(models.Model):
         return f"{self.invoice_number} - {self.transaction_type}"
 
 class Agency(models.Model):
-    agency_id = models.CharField(max_length=100, unique=True)
-    agency_name = models.CharField(max_length=255)
-    contact_person = models.CharField(max_length=255)
-    email = models.EmailField()
-    phone_number = models.CharField(max_length=20)
-    address = models.CharField(max_length=255)
-    country = models.CharField(max_length=100)
-    city = models.CharField(max_length=100)
-    state_province = models.CharField(max_length=100)
-    postal_code = models.CharField(max_length=20)
-    billing_address = models.CharField(max_length=255)
-    letter_of_authority = models.FileField(upload_to='authorities/')
+    agency_id = models.CharField(max_length=100, unique=True, null=True, blank=True)
+    agency_name = models.CharField(max_length=255, null=True, blank=True)
+    contact_person = models.CharField(max_length=255, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    phone_number = models.CharField(max_length=20, null=True, blank=True)
+    address = models.CharField(max_length=255, null=True, blank=True)
+    country = models.CharField(max_length=100, null=True, blank=True)
+    city = models.CharField(max_length=100, null=True, blank=True)
+    state_province = models.CharField(max_length=100, null=True, blank=True)
+    postal_code = models.CharField(max_length=20, null=True, blank=True)
+    billing_address = models.CharField(max_length=255, null=True, blank=True)
+    letter_of_authority = models.FileField(upload_to='authorities/', null=True, blank=True)
 
     # Services Offered
-    container_handling = models.BooleanField(default=False)
-    cargo_handling = models.BooleanField(default=False)
-    customs_clearance = models.BooleanField(default=False)
-    warehousing = models.BooleanField(default=False)
+    container_handling = models.BooleanField(default=False, null=True, blank=True)
+    cargo_handling = models.BooleanField(default=False, null=True, blank=True)
+    customs_clearance = models.BooleanField(default=False, null=True, blank=True)
+    warehousing = models.BooleanField(default=False, null=True, blank=True)
 
     def __str__(self):
         return self.agency_name
