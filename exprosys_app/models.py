@@ -55,12 +55,29 @@ class Container(models.Model):
     STATUS_CHOICES = [('in transit', 'In Transit'), ('at port', 'At Port'), ('delivered', 'Delivered')]
 
     container_id = models.CharField(max_length=20, unique=True, primary_key=True)
-    container_size = models.CharField(max_length=10)
-    container_type = models.CharField(max_length=20)
-    status = models.CharField(max_length=20)
+    _10FT = models.BooleanField(default=False, null =True, blank = True)
+    _20FT = models.BooleanField(default=False, null =True, blank = True)
+    _40FT = models.BooleanField(default=False, null =True, blank = True)
+    _45FT = models.BooleanField(default=False, null =True, blank = True)
+    regular = models.BooleanField(default=False, null =True, blank = True)
+    oog = models.BooleanField(default=False, null =True, blank = True)
+    otfr = models.BooleanField(default=False, null =True, blank = True)
+    reefer = models.BooleanField(default=False, null =True, blank = True)
+    export_full= models.BooleanField(default=False, null =True, blank = True)
+    export_empty= models.BooleanField(default=False, null =True, blank = True)
+    import_full= models.BooleanField(default=False, null =True, blank = True)
+    import_empty= models.BooleanField(default=False, null =True, blank = True)
+    in_transit= models.BooleanField(default=False, null =True, blank = True)
+    awaiting_delivery= models.BooleanField(default=False, null =True, blank = True)
+    hijacked= models.BooleanField(default=False, null =True, blank = True)
+    import_empty= models.BooleanField(default=False, null =True, blank = True)
+
+    
+   # in transit
+    
     current_location = models.CharField(max_length=100)
     origin = models.CharField(max_length=100)
-    booking_number = models.CharField(max_length=50)
+    booking_number = models.CharField(max_length=50, blank =True, null=True)
     shipping_line = models.CharField(max_length=100)
     arrival_date = models.DateField(null=True, blank=True)
     departure_date = models.DateField(null=True, blank=True)
