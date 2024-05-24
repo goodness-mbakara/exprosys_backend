@@ -19,7 +19,7 @@ class AgencyListView(generics.ListAPIView):
     serializer_class = AgencyListSerializer
     pagination_class = CustomPagination  # Define this class to handle pagination settings
 
-class AgencyDetailView(generics.RetrieveAPIView):
+class AgencyDetailView(generics.RetrieveUpdateAPIView):
     queryset = Agency.objects.all()
     serializer_class = AgencyDetailSerializer
     lookup_field = 'agency_id'
