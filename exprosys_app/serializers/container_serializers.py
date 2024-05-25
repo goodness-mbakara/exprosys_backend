@@ -8,11 +8,11 @@ class ContainerEventSerializer(serializers.ModelSerializer):
         fields = ['event_date', 'description']
 
 class ContainerSerializer(serializers.ModelSerializer):
-    events = ContainerEventSerializer(many=True, read_only=True)
+    #events = ContainerEventSerializer(many=True, read_only=True)
 
     class Meta:
         model = Container
-        fields = ['container_id', 'container_size', 'container_type', 'status', 'current_location', 'origin', 'booking_number', 'estimated_time_of_arrival', 'shipping_line', 'events']
+        fields ='__all__' #['container_id', 'container_size', 'container_type', 'status', 'current_location', 'origin', 'booking_number', 'estimated_time_of_arrival', 'shipping_line', 'events']
 
 class ContainerDetailSerializer(serializers.ModelSerializer):
     events = ContainerEventSerializer(many=True, read_only=True)
@@ -45,7 +45,7 @@ class ContainerTransferSerializer(serializers.ModelSerializer):
 class ContainerListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Container
-        fields = ['container_id', 'status', 'container_type', 'arrival_date', 'departure_date', 'vessel_name', 'customer_name']
+        fields = '__all__' #['container_id', 'status', 'container_type', 'arrival_date', 'departure_date', 'vessel_name', 'customer_name']
 
 class ManageContainerDetailSerializer(serializers.ModelSerializer):
     class Meta:
