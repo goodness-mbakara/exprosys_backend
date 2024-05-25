@@ -75,10 +75,10 @@ class Container(models.Model):
     
    # in transit
     
-    current_location = models.CharField(max_length=100)
-    origin = models.CharField(max_length=100)
+    current_location = models.CharField(max_length=100, null =True, blank = True)
+    origin = models.CharField(max_length=100, null =True, blank = True)
     booking_number = models.CharField(max_length=50, blank =True, null=True)
-    shipping_line = models.CharField(max_length=100)
+    shipping_line = models.CharField(max_length=100, null =True, blank = True)
     arrival_date = models.DateField(null=True, blank=True)
     departure_date = models.DateField(null=True, blank=True)
     vessel_name = models.CharField(max_length=100, null=True, blank=True)
