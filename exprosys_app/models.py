@@ -55,26 +55,11 @@ class Container(models.Model):
     STATUS_CHOICES = [('in transit', 'In Transit'), ('at port', 'At Port'), ('delivered', 'Delivered')]
 
     container_id = models.CharField(max_length=20, unique=True, primary_key=True)
-    _10FT = models.BooleanField(default=False, null =True, blank = True)
-    _20FT = models.BooleanField(default=False, null =True, blank = True)
-    _40FT = models.BooleanField(default=False, null =True, blank = True)
-    _45FT = models.BooleanField(default=False, null =True, blank = True)
-    regular = models.BooleanField(default=False, null =True, blank = True)
-    oog = models.BooleanField(default=False, null =True, blank = True)
-    otfr = models.BooleanField(default=False, null =True, blank = True)
-    reefer = models.BooleanField(default=False, null =True, blank = True)
-    export_full= models.BooleanField(default=False, null =True, blank = True)
-    export_empty= models.BooleanField(default=False, null =True, blank = True)
-    import_full= models.BooleanField(default=False, null =True, blank = True)
-    import_empty= models.BooleanField(default=False, null =True, blank = True)
-    in_transit= models.BooleanField(default=False, null =True, blank = True)
-    awaiting_delivery= models.BooleanField(default=False, null =True, blank = True)
-    hijacked= models.BooleanField(default=False, null =True, blank = True)
-    import_empty= models.BooleanField(default=False, null =True, blank = True)
-
-    
-   # in transit
-    
+    container_size = models.CharField(max_length=20,null =True, blank = True)
+    container_type = models.CharField(max_length=20,null =True, blank = True)
+    status = models.CharField(max_length=20,null =True, blank = True)
+    export_type = models.CharField(max_length=20,null =True, blank = True)
+    import_type = models.CharField(max_length=20,null =True, blank = True)
     current_location = models.CharField(max_length=100, null =True, blank = True)
     origin = models.CharField(max_length=100, null =True, blank = True)
     booking_number = models.CharField(max_length=50, blank =True, null=True)
