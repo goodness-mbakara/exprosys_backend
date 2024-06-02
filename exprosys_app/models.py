@@ -60,7 +60,6 @@ class Container(models.Model):
     status = models.CharField(max_length=200,null =True, blank = True)
     export_type = models.CharField(max_length=200,null =True, blank = True)
     import_type = models.CharField(max_length=200,null =True, blank = True)
-    current_location = models.CharField(max_length=100, null =True, blank = True)
     origin = models.CharField(max_length=100, null =True, blank = True)
     booking_number = models.CharField(max_length=50, blank =True, null=True)
     shipping_line = models.CharField(max_length=100, null =True, blank = True)

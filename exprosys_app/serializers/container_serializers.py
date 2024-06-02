@@ -29,7 +29,7 @@ class ContainerTransferSerializer(serializers.ModelSerializer):
     def validate(self, data):
         # Ensure that the transfer_from matches the container's current location
         container = data['container']
-        if data['transfer_from'] != container.current_location:
+        if data['transfer_from'] != container.origin:
             raise serializers.ValidationError("Transfer from location must match the container's current location.")
         return data
 
@@ -37,7 +37,7 @@ class ContainerTransferSerializer(serializers.ModelSerializer):
         # Update the container's current location after the transfer
         container_transfer = ContainerTransfer.objects.create(**validated_data)
         container = validated_data['container']
-        container.current_location = validated_data['transfer_to']
+        container.origin = validated_data['transfer_to']
         container.save()
 
         return container_transfer
