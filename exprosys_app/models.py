@@ -248,14 +248,19 @@ class OutboundGateExit(models.Model):
 class TruckQueueManagement(models.Model):
     truck_id = models.CharField(max_length=50, unique = True)
     company_organization = models.CharField(max_length=100)
-    driver_name = models.CharField(max_length=100)
-    driver_phone_number = models.CharField(max_length=50)
-    priority = models.CharField(max_length=10)  # e.g., High, Medium, Low
+    driver_name = models.CharField(max_length=100, null = True, blank =True)
+    driver_phone_number = models.CharField(max_length=50, null = True, blank =True)
+    priority = models.CharField(max_length=10, null = True, blank =True)  # e.g., High, Medium, Low
     status = models.CharField(max_length=50)  # e.g., Waiting, Loading, Departed
     created_at = models.DateTimeField(auto_now_add = True, null = True, blank =True)
     updated_at = models.DateTimeField(auto_now=True, null = True, blank =True)
-    merge_containers = models.CharField(max_length=255, blank=True)
-    assigned_terminal = models.CharField(max_length=100, blank=True)
+    merge_containers = models.CharField(max_length=255, null = True, blank =True)
+    assigned_terminal = models.CharField(max_length=100, null = True, blank =True)
+    notes = models.CharField(max_length=100, null = True, blank =True)
+    instruction = models.TextField(null = True, blank =True)
+    container_number = models.CharField(max_length=100, null = True, blank =True)
+    
+    
 
 
     def __str__(self):
