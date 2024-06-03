@@ -12,7 +12,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 class CustomerListCreateAPIView(generics.ListCreateAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
-    pagination_class = StandardResultsSetPagination
+    #pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         queryset = super().get_queryset()
