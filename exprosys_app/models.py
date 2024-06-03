@@ -66,7 +66,7 @@ class Container(models.Model):
     arrival_date = models.DateField(null=True, blank=True)
     departure_date = models.DateField(null=True, blank=True)
     vessel_name = models.CharField(max_length=100, null=True, blank=True)
-    customer_name = models.CharField(max_length=100, null=True, blank=True)
+    customer = models.ForeignKey('Customer', on_delete = models.CASCADE)
     destination = models.CharField(max_length=100, null=True, blank = True)
     vessel_assignment = models.CharField(max_length=100, default='Not assigned', null=True, blank = True)
     cargo_type = models.CharField(max_length=50, default='general', null=True, blank = True)
