@@ -54,7 +54,7 @@ class Container(models.Model):
     CONTAINER_TYPES = [('standard', 'Standard'), ('reefer', 'Reefer')]
     STATUS_CHOICES = [('in transit', 'In Transit'), ('at port', 'At Port'), ('delivered', 'Delivered')]
 
-    container_id = models.CharField(max_length=20, unique=True, primary_key=True)
+    container_id = models.AutoField(primary_key = True)
     container_size = models.CharField(max_length=200,null =True, blank = True)
     container_type = models.CharField(max_length=200,null =True, blank = True)
     status = models.CharField(max_length=200,null =True, blank = True)
