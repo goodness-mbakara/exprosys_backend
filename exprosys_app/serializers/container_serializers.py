@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from ..models import Container, ContainerEvent, ContainerTransfer
-
+from .customer_serializers import CustomerSerializer
 
 class ContainerEventSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,6 +9,7 @@ class ContainerEventSerializer(serializers.ModelSerializer):
 
 class ContainerSerializer(serializers.ModelSerializer):
     #events = ContainerEventSerializer(many=True, read_only=True)
+    customer = CustomerSerializer(read_only = True, many = True)
 
     class Meta:
         model = Container
