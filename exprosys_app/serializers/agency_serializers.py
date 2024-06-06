@@ -4,7 +4,7 @@ from ..models import Agency
 class AgencyListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Agency
-        fields = ['agency_id', 'agency_name', 'contact_person', 'email', 'phone_number', 'address']
+        fields =  '__all__'
 
 class AgencyDetailSerializer(serializers.ModelSerializer):
     class Meta:

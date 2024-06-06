@@ -132,7 +132,7 @@ class Transaction(models.Model):
         return f"{self.invoice_number} - {self.transaction_type}"
 
 class Agency(models.Model):
-    agency_id = models.CharField(max_length=100, unique=True, null=True, blank=True)
+    agency_id = models.AutoField(primary_key=True)
     agency_name = models.CharField(max_length=255, null=True, blank=True)
     contact_person = models.CharField(max_length=255, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
@@ -156,10 +156,10 @@ class Agency(models.Model):
 
 
 class Agent(models.Model):
+    agent_id = models.AutoField(primary_key=True)
     agency_name = models.CharField(max_length=255)
-    agency_id = models.CharField(max_length=100, unique=True)
+    agency_id = models.ForeignKey('Agency', related_name = 'agents', on_delete = models.CASCADE)
     agent_name = models.CharField(max_length=255)
-    agent_id = models.CharField(max_length=100, unique=True)
     email = models.EmailField()
     phone_number = models.CharField(max_length=20)
     address = models.CharField(max_length=255)
