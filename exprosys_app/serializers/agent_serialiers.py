@@ -4,12 +4,12 @@ from ..models import Agent
 class AgentListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Agent
-        fields = ['agent_id', 'agent_name', 'contact_person', 'email', 'phone_number', 'address']
+        fields = '__all__'
 
 class AgentDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Agent
-        fields = ['profile_picture', 'agency_name', 'id', 'address', 'email', 'phone_number', 'services_offered']
+        fields = '__all__'
 
 class AgentCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
