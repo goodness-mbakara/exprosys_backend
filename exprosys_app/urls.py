@@ -18,6 +18,7 @@ from .apis.equipment_interchange_apis import (ProcessEquipmentInterchangeListCre
 from .apis.invoice_apis import  PostExportInvoiceCreateView,PostPaymentCreateView,InvoicePostingReportDetailView
 from .apis.booked_container_apis import BookedContainerListView
 from .apis.exporter_api import ExporterListCreateView, ExporterRetrieveUpdateDestroyView
+from .apis.export_delivery_api import ExportDeliveryListCreateView, ExportDeliveryRetrieveUpdateDestroyView
 
 urlpatterns = [
     #auth endpoints
@@ -78,4 +79,8 @@ urlpatterns = [
     #exporter endpoints
     path('exporters/', ExporterListCreateView.as_view(), name='exporter-list-create'),
     path('exporters/<int:pk>/', ExporterRetrieveUpdateDestroyView.as_view(), name='exporter-retrieve-update-destroy'),
+    
+    #export delivery endpoints
+    path('export-deliveries/', ExportDeliveryListCreateView.as_view(), name='export-delivery-list-create'),
+    path('export-deliveries/<int:pk>/', ExportDeliveryRetrieveUpdateDestroyView.as_view(), name='export-delivery-retrieve-update-destroy'),
 ]

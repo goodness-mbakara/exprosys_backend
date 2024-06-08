@@ -390,11 +390,40 @@ class InvoicePostingReport(models.Model):
 
 class ExportDelivery(models.Model):
     edo_number = models.AutoField(primary_key = True)
-    booking_number
-    delivery_date
-    container_list
-    container_part
-    damage_status
+    booking_number = models.CharField(max_length=100 , null =True, blank=True)
+    delivery_date = models.DateField()
+    container_list = models.TextField( null =True, blank=True)
+    container_part = models.TextField( null =True, blank=True)
+    damage_status = models.TextField( null =True, blank=True)
+    exporter_id = models.ForeignKey('Exporter', on_delete = models.CASCADE, related_name = 'deliveries', null =True, blank=True)
+    bellington_annexes = models.TextField(null =True, blank=True)
+    validate_truck = models.BooleanField(default=False)
+    validate_booking = models.BooleanField(default=False)
+    agent_id = models.ForeignKey('Agent', on_delete=models.CASCADE, null =True, blank=True)
+    contact_number = models.CharField(max_length = 50, null =True, blank=True)
+    shipping_line = models.TextField(null =True, blank=True)
+    vessel_name = models.TextField(null =True, blank=True)
+    vessel_departure_date = models.DateField(null =True, blank=True)
+    port_of_loading = models.TextField(null =True, blank=True)
+    truck_to_port = models.BooleanField(default=False)
+    stuffing = models.BooleanField(default=False)
+    weightbridge = models.BooleanField(default=False)
+    cbm_weight = models.CharField(max_length = 50, null =True, blank=True)
+    truck_driver_name = models.CharField(max_length = 100, null =True, blank=True)
+    truck_id = models.CharField(max_length = 100, null =True, blank=True)
+    delivery_status = models.TextField( null =True, blank=True)
+    description = models.TextField( null =True, blank=True)
+    
+    def __str__(self):
+        return str(self.edo_number)
+    
+    
+    
+    
+    
+
+    
+    
 
 class Exporter(models.Model):
     exporter_id = models.AutoField(primary_key = True)
