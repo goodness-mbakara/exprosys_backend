@@ -169,7 +169,7 @@ class Agent(models.Model):
     state_province = models.CharField(max_length=100)
     postal_code = models.CharField(max_length=20)
     profile_picture = models.ImageField(upload_to='profile_pics/')
-    services_offered = models.CharField(max_length=255, null = True, blank =True)
+    services_offered = models.TextField(null = True, blank =True)
     def __str__(self):
         return self.agent_name
 
@@ -387,3 +387,23 @@ class InvoicePostingReport(models.Model):
     contact_person = models.CharField(max_length=100)
     email = models.EmailField()
     amount_payment_status = models.CharField(max_length=50)
+
+class ExportDelivery(models.Model):
+    edo_number = models.AutoField(primary_key = True)
+    booking_number
+    delivery_date
+    container_list
+    container_part
+    damage_status
+
+class Exporter(models.Model):
+    exporter_id = models.AutoField(primary_key = True)
+    exporter_name = models.TextField()
+    email_address  = models.EmailField()
+    phone_number = models.CharField(max_length = 50)
+    contact_person = models.TextField()
+    address = models.TextField()
+    city = models.CharField(max_length =100)
+    country= models.CharField(max_length =100)
+    state_province = models.CharField(max_length =100)
+    postal_code = models.CharField(max_length =100)
