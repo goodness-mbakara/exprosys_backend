@@ -157,18 +157,18 @@ class Agency(models.Model):
 
 class Agent(models.Model):
     agent_id = models.AutoField(primary_key=True)
-    agency_name = models.CharField(max_length=255)
-    agency_id = models.ForeignKey('Agency', related_name = 'agents', on_delete = models.CASCADE)
     agent_name = models.CharField(max_length=255)
-    email = models.EmailField()
+    contact_person = models.CharField(max_length=255, null = True, blank =True)
     phone_number = models.CharField(max_length=20)
     address = models.CharField(max_length=255)
+    agency_name = models.CharField(max_length=255)
+    agency_id = models.ForeignKey('Agency', related_name = 'agents', on_delete = models.CASCADE) 
+    email = models.EmailField()
     city = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
     state_province = models.CharField(max_length=100)
     postal_code = models.CharField(max_length=20)
     profile_picture = models.ImageField(upload_to='profile_pics/')
-    contact_person = models.CharField(max_length=255, null = True, blank =True)
     services_offered = models.CharField(max_length=255, null = True, blank =True)
     def __str__(self):
         return self.agent_name
