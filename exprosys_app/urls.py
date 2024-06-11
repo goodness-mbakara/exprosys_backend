@@ -7,7 +7,7 @@ from .apis.containers_api import (
     ContainerEventListCreateAPIView, ContainerStatusAPIView,
     ContainerTransferAPIView, ContainerListView, ContainerDetailView)
 
-from .apis.customer_api import CustomerListCreateAPIView, CustomerDetailView
+
 from .apis.agency_apis import AgencyCreateView, AgencyListView, AgencyDetailView
 from .apis.agent_api import AgentCreateView, AgentListView, AgentDetailView, AgentUpdateView
 from .apis.truck_apis import TruckQueueManagementListCreateView,get_queue_metrics, TruckQueueManagementDetailView
@@ -34,9 +34,7 @@ urlpatterns = [
     path('container-transfer/', ContainerTransferAPIView.as_view(), name='container-transfer'),
     path('manage-containers/', ContainerListView.as_view(), name='container-manage'),
     path('manage-containers/<str:container_id>/', ContainerDetailView.as_view(), name='container-manage'),
-    #customer endpoints
-    path('customers/', CustomerListCreateAPIView.as_view(), name='customer-list-create'),
-    path('customers/<str:customer_id>/', CustomerDetailView.as_view(), name='customer-detail'),
+
     #agency endpoints
     path('agency/', AgencyCreateView.as_view(), name='agency-create'),
     path('agency-list/', AgencyListView.as_view(), name='agency-list'),

@@ -66,7 +66,7 @@ class Container(models.Model):
     arrival_date = models.DateField(null=True, blank=True)
     departure_date = models.DateField(null=True, blank=True)
     vessel_name = models.CharField(max_length=100, null=True, blank=True)
-    customer = models.ForeignKey('Customer', on_delete = models.CASCADE, null=True, blank=True)
+    exporter = models.ForeignKey('Exporter', on_delete = models.CASCADE, null =True, blank=True)
     destination = models.CharField(max_length=100, null=True, blank = True)
     vessel_assignment = models.CharField(max_length=100, default='Not assigned', null=True, blank = True)
     cargo_type = models.CharField(max_length=50, default='general', null=True, blank = True)
@@ -97,32 +97,12 @@ class ContainerTransfer(models.Model):
         return f"Transfer of {self.container.container_id} from {self.transfer_from} to {self.transfer_to}"
 
 
-
-class Customer(models.Model):
-    customer_id = models.AutoField(primary_key = True)
-    customer_name = models.CharField(max_length=100)
-    contact_person = models.CharField(max_length=100)
-    email = models.EmailField()
-    phone = models.CharField(max_length=15)
-    address = models.CharField(max_length=255)
-    city = models.CharField(max_length=100)
-    state_province = models.CharField(max_length=100)
-    postal_code = models.CharField(max_length=20)
-    country = models.CharField(max_length=100)
-    account_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, null =True, blank=True)
-    credit_limit = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, null =True, blank=True)
-    payment_terms = models.CharField(max_length=100, null =True, blank=True)
-    credit_status = models.CharField(max_length=50, null =True, blank=True)
-
-    def __str__(self):
-        return self.customer_name
-
 class Transaction(models.Model):
     TRANSACTION_TYPE_CHOICES = [
         ('invoice', 'Invoice'),
         ('payment', 'Payment'),
     ]
-    customer = models.ForeignKey('Customer', related_name='transactions', on_delete=models.CASCADE)
+    exporter = models.ForeignKey('Exporter', on_delete = models.CASCADE, related_name = 'transactions')
     date = models.DateTimeField()
     invoice_number = models.CharField(max_length=50)
     transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPE_CHOICES)
@@ -301,10 +281,10 @@ class ProcessEquipmentInterchange(models.Model):
     driver_id = models.CharField(max_length=50)
     export_type = models.CharField(max_length=50, choices=EXPORT_TYPE_CHOICES)
     damage_status = models.CharField(max_length=50)
-    customer = models.ForeignKey('Customer', on_delete = models.CASCADE)
+    exporter = models.ForeignKey('Exporter', on_delete = models.CASCADE)
 
     def __str__(self):
-        return f"{self.container_id} - {self.customer.customer_name}"
+        return f"{self.container_id} - {self.exporter.exporter_name}"
 
 
 class EquipmentInterchangeReceipt(models.Model):
@@ -344,14 +324,14 @@ class EquipmentInterchangeReceipt(models.Model):
     location_terminal_name = models.CharField(max_length=100)
     location_terminal_location = models.CharField(max_length=255)
     location_date_of_interchange = models.DateField()
-    prepared_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    prepared_by = models.ForeignKey('Exporter', on_delete = models.CASCADE)
 
     def __str__(self):
         return f"{self.equipment_id_number} - {self.interchange_reference_number}"
 
 class BookedContainer(models.Model):
     container_number = models.CharField(max_length=20)
-    customer = models.ForeignKey('Customer', on_delete = models.CASCADE)
+    exporter = models.ForeignKey('Exporter', on_delete = models.CASCADE)
     contact_person = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(max_length=15)
@@ -359,7 +339,7 @@ class BookedContainer(models.Model):
 
 class PostExportInvoice(models.Model):
     container_number = models.CharField(max_length=20)
-    customer = models.ForeignKey('Customer', on_delete = models.CASCADE)
+    exporter = models.ForeignKey('Exporter', on_delete = models.CASCADE)
     invoice_date = models.DateField()
     export_handling_fees = models.DecimalField(max_digits=10, decimal_places=2)
     storage_charges = models.DecimalField(max_digits=10, decimal_places=2)
@@ -372,7 +352,7 @@ class PostExportInvoice(models.Model):
 
 class PostPayment(models.Model):
     container_number = models.CharField(max_length=20)
-    customer = models.ForeignKey('Customer', on_delete = models.CASCADE)
+    exporter = models.ForeignKey('Exporter', on_delete = models.CASCADE)
     payment_date = models.DateField()
     invoice_number = models.CharField(max_length=50)
     total_amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
@@ -383,7 +363,7 @@ class PostPayment(models.Model):
 
 class InvoicePostingReport(models.Model):
     container_number = models.CharField(max_length=20)
-    customer = models.ForeignKey('Customer', on_delete = models.CASCADE)
+    exporter = models.ForeignKey('Exporter', on_delete = models.CASCADE)
     contact_person = models.CharField(max_length=100)
     email = models.EmailField()
     amount_payment_status = models.CharField(max_length=50)
