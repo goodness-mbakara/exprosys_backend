@@ -1,10 +1,7 @@
 from datetime import timezone
 
-from django.contrib.auth.models import (
-    AbstractBaseUser,
-    BaseUserManager,
-    PermissionsMixin,
-)
+from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
+                                        PermissionsMixin)
 from django.db import models
 
 
@@ -50,6 +47,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     account_recovery_answer = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
 
+    # from the setting screen
+    gender = models.CharField(max_length=100, blank=True, null=True)
+    language = models.CharField(max_length=100, blank=True, null=True)
+    display_name = models.CharField(max_length=200, blank=True, null=True)
+    country_region = models.CharField(max_length=200, blank=True, null=True)
+
     USERNAME_FIELD = "username"
     # REQUIRED_FIELDS = ['username']
 
@@ -58,6 +61,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+class JWTClientInfo(models.Model):
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='jwt_client_info')
+    access_time = models.DateTimeField(auto_now_add=True)
+    device = models.CharField(max_length=255)
+    location = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.email} - {self.access_time}"
 
 class Container(models.Model):
     CONTAINER_SIZES = [("20", "20 feet"), ("40", "40 feet")]
@@ -213,7 +224,7 @@ class GateAccessControl(models.Model):
 
 
 class InboundPreGateEntry(models.Model):
-    container_id = models.CharField(max_length=100, blank=True, null=True)
+    container_id = models.ForeignKey('Container',max_length=100, blank=True, null=True, on_delete=models.CASCADE)
     eto_gate_pass_no = models.CharField(max_length=100, blank=True, null=True)
     gate_in_date = models.DateField(blank=True, null=True)
     license_plate_number = models.CharField(max_length=50, blank=True, null=True)
@@ -236,7 +247,7 @@ class InboundPreGateEntry(models.Model):
 
 
 class OutboundGateExit(models.Model):
-    container_id = models.CharField(max_length=100, blank=True, null=True)
+    container_id = models.ForeignKey('Container',max_length=100, blank=True, null=True, on_delete=models.CASCADE)
     truck_number = models.CharField(max_length=50, blank=True, null=True)
     driver_name = models.CharField(max_length=100, blank=True, null=True)
     driver_contact = models.CharField(max_length=50, blank=True, null=True)
@@ -254,7 +265,7 @@ class OutboundGateExit(models.Model):
     security_check_note = models.CharField(max_length=100, null=True, blank=True)
     security_code = models.CharField(max_length=100, null=True, blank=True)
     date_time = models.DateTimeField(null=True, blank=True)
-    attachments = models.FileField(null=True, blank=True, upload_to = 'gate_uploads/')
+    attachments = models.FileField(null=True, blank=True, upload_to="gate_uploads/")
 
     def __str__(self):
         return f"{self.truck_number} - {self.container_id}"
@@ -275,7 +286,7 @@ class TruckQueueManagement(models.Model):
     assigned_terminal = models.CharField(max_length=100, null=True, blank=True)
     notes = models.CharField(max_length=100, null=True, blank=True)
     instruction = models.TextField(null=True, blank=True)
-    container_number = models.CharField(max_length=100, null=True, blank=True)
+    container_number = models.ForeignKey('Container',max_length=100, blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.truck_id} - {self.driver_name}"
@@ -309,7 +320,7 @@ class ProcessEquipmentInterchange(models.Model):
         ("Full", "Full"),
         ("Empty", "Empty"),
     ]
-    container_id = models.CharField(max_length=50)
+    container_id = models.ForeignKey('Container',max_length=100, blank=True, null=True, on_delete=models.CASCADE)
     container_part = models.CharField(max_length=50, choices=CONTAINER_PART_CHOICES)
     transport_id = models.CharField(max_length=50)
     driver_id = models.CharField(max_length=50)
@@ -365,7 +376,7 @@ class EquipmentInterchangeReceipt(models.Model):
 
 
 class BookedContainer(models.Model):
-    container_number = models.CharField(max_length=20)
+    container_number = models.ForeignKey('Container',max_length=100, blank=True, null=True, on_delete=models.CASCADE)
     exporter = models.ForeignKey("Exporter", on_delete=models.CASCADE)
     contact_person = models.CharField(max_length=100)
     email = models.EmailField()
@@ -374,7 +385,7 @@ class BookedContainer(models.Model):
 
 
 class PostExportInvoice(models.Model):
-    container_number = models.CharField(max_length=20)
+    container_number = models.ForeignKey('Container',max_length=100, blank=True, null=True, on_delete=models.CASCADE)
     exporter = models.ForeignKey("Exporter", on_delete=models.CASCADE)
     invoice_date = models.DateField()
     export_handling_fees = models.DecimalField(max_digits=10, decimal_places=2)
@@ -388,7 +399,7 @@ class PostExportInvoice(models.Model):
 
 
 class PostPayment(models.Model):
-    container_number = models.CharField(max_length=20)
+    container_number = models.ForeignKey('Container',max_length=100, blank=True, null=True, on_delete=models.CASCADE)
     exporter = models.ForeignKey("Exporter", on_delete=models.CASCADE)
     payment_date = models.DateField()
     invoice_number = models.CharField(max_length=50)
@@ -400,7 +411,7 @@ class PostPayment(models.Model):
 
 
 class InvoicePostingReport(models.Model):
-    container_number = models.CharField(max_length=20)
+    container_number = models.ForeignKey('Container',max_length=100, blank=True, null=True, on_delete=models.CASCADE)
     exporter = models.ForeignKey("Exporter", on_delete=models.CASCADE)
     contact_person = models.CharField(max_length=100)
     email = models.EmailField()
