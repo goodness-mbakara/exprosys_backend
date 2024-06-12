@@ -182,9 +182,8 @@ class Agent(models.Model):
     contact_person = models.CharField(max_length=255, null=True, blank=True)
     phone_number = models.CharField(max_length=20)
     address = models.CharField(max_length=255)
-    agency_name = models.CharField(max_length=255)
     agency_id = models.ForeignKey(
-        "Agency", related_name="agents", on_delete=models.CASCADE
+        "Agency", related_name="agents", on_delete=models.CASCADE, null =True, blank=True
     )
     email = models.EmailField()
     city = models.CharField(max_length=100)
