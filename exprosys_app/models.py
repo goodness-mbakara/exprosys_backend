@@ -139,7 +139,7 @@ class Transaction(models.Model):
         ("payment", "Payment"),
     ]
     exporter = models.ForeignKey(
-        "Exporter", on_delete=models.CASCADE, related_name="transactions"
+        "Exporter", on_delete=models.CASCADE, related_name="transactions", null =True
     )
     date = models.DateTimeField()
     invoice_number = models.CharField(max_length=50)
@@ -325,7 +325,7 @@ class ProcessEquipmentInterchange(models.Model):
     driver_id = models.CharField(max_length=50)
     export_type = models.CharField(max_length=50, choices=EXPORT_TYPE_CHOICES)
     damage_status = models.CharField(max_length=50)
-    exporter = models.ForeignKey("Exporter", on_delete=models.CASCADE)
+    exporter = models.ForeignKey("Exporter", on_delete=models.CASCADE, null =True)
 
     def __str__(self):
         return f"{self.container_id} - {self.exporter.exporter_name}"
@@ -376,7 +376,7 @@ class EquipmentInterchangeReceipt(models.Model):
 
 class BookedContainer(models.Model):
     container_number = models.ForeignKey('Container',max_length=100, blank=True, null=True, on_delete=models.CASCADE)
-    exporter = models.ForeignKey("Exporter", on_delete=models.CASCADE)
+    exporter = models.ForeignKey("Exporter", on_delete=models.CASCADE, null =True)
     contact_person = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(max_length=15)
@@ -385,7 +385,7 @@ class BookedContainer(models.Model):
 
 class PostExportInvoice(models.Model):
     container_number = models.ForeignKey('Container',max_length=100, blank=True, null=True, on_delete=models.CASCADE)
-    exporter = models.ForeignKey("Exporter", on_delete=models.CASCADE)
+    exporter = models.ForeignKey("Exporter", on_delete=models.CASCADE, null =True)
     invoice_date = models.DateField()
     export_handling_fees = models.DecimalField(max_digits=10, decimal_places=2)
     storage_charges = models.DecimalField(max_digits=10, decimal_places=2)
@@ -399,7 +399,7 @@ class PostExportInvoice(models.Model):
 
 class PostPayment(models.Model):
     container_number = models.ForeignKey('Container',max_length=100, blank=True, null=True, on_delete=models.CASCADE)
-    exporter = models.ForeignKey("Exporter", on_delete=models.CASCADE)
+    exporter = models.ForeignKey("Exporter", on_delete=models.CASCADE, null =True)
     payment_date = models.DateField()
     invoice_number = models.CharField(max_length=50)
     total_amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
@@ -411,7 +411,7 @@ class PostPayment(models.Model):
 
 class InvoicePostingReport(models.Model):
     container_number = models.ForeignKey('Container',max_length=100, blank=True, null=True, on_delete=models.CASCADE)
-    exporter = models.ForeignKey("Exporter", on_delete=models.CASCADE)
+    exporter = models.ForeignKey("Exporter", on_delete=models.CASCADE, null =True)
     contact_person = models.CharField(max_length=100)
     email = models.EmailField()
     amount_payment_status = models.CharField(max_length=50)
