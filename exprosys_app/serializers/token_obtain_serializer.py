@@ -15,19 +15,19 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        request = cls.context.get("request")
-        if request:
-            user_agent = get_user_agent(request)
-            device = user_agent.device.family
-            location = request.META.get("HTTP_X_FORWARDED_FOR") or request.META.get(
-                "REMOTE_ADDR"
-            )
+        request = self.context.get("request")
+        # if request:
+        #     user_agent = get_user_agent(request)
+        #     device = user_agent.device.family
+        #     location = request.META.get("HTTP_X_FORWARDED_FOR") or request.META.get(
+        #         "REMOTE_ADDR"
+        #     )
 
-            JWTClientInfo.objects.create(
-                user=user,
-                device=device,
-                location=location,
-            )
+        #     JWTClientInfo.objects.create(
+        #         user=user,
+        #         device=device,
+        #         location=location,
+        #     )
 
         # Add custom claims to the token
         token["username"] = user.username
