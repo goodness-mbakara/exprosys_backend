@@ -56,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'exprosys_app.middleware.AttachRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'exprosys_backend.urls'

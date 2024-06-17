@@ -1,29 +1,49 @@
 from django.urls import path
-from .apis.register_api import RegisterView
 
-from .apis.login_api import LoginView, ChangePasswordView, RecoverPasswordView, MyTokenObtainPairView
-from .apis.containers_api import (
-    ContainerListCreateAPIView, ContainerRetrieveUpdateDestroyAPIView, 
-    ContainerEventListCreateAPIView, ContainerStatusAPIView,
-    ContainerTransferAPIView, ContainerListView, ContainerDetailView)
-
-
-from .apis.agency_apis import AgencyCreateView, AgencyListView, AgencyDetailView
-from .apis.agent_api import AgentCreateView, AgentListView, AgentDetailView, AgentUpdateView
-from .apis.truck_apis import TruckQueueManagementListCreateView,get_queue_metrics, TruckQueueManagementDetailView
-from .apis.gate_apis import (GateAccessControlListCreateView,GateAccessControlDetailView,
-    InboundPreGateEntryListCreateView,InboundPreGateEntryDetailView,OutboundGateExitListCreateView,OutboundGateExitDetailView)
-from .apis.cointainer_cycle_apis import ContainerCycleManagementListCreateView,ContainerCycleManagementDetailView
-from .apis.equipment_interchange_apis import (ProcessEquipmentInterchangeListCreateView,ProcessEquipmentInterchangeDetailView,EquipmentInterchangeReceiptListCreateView,EquipmentInterchangeReceiptDetailView,)
-from .apis.invoice_apis import  PostExportInvoiceCreateView,PostPaymentCreateView,InvoicePostingReportDetailView
+from .apis.agency_apis import (AgencyCreateView, AgencyDetailView,
+                               AgencyListView)
+from .apis.agent_api import (AgentCreateView, AgentDetailView, AgentListView,
+                             AgentUpdateView)
 from .apis.booked_container_apis import BookedContainerListView
-from .apis.exporter_api import ExporterListCreateView, ExporterRetrieveUpdateDestroyView
-from .apis.export_delivery_api import ExportDeliveryListCreateView, ExportDeliveryRetrieveUpdateDestroyView
+from .apis.cointainer_cycle_apis import (
+    ContainerCycleManagementDetailView, ContainerCycleManagementListCreateView)
+from .apis.containers_api import (ContainerDetailView,
+                                  ContainerEventListCreateAPIView,
+                                  ContainerListCreateAPIView,
+                                  ContainerListView,
+                                  ContainerRetrieveUpdateDestroyAPIView,
+                                  ContainerStatusAPIView,
+                                  ContainerTransferAPIView)
+from .apis.equipment_interchange_apis import (
+    EquipmentInterchangeReceiptDetailView,
+    EquipmentInterchangeReceiptListCreateView,
+    ProcessEquipmentInterchangeDetailView,
+    ProcessEquipmentInterchangeListCreateView)
+from .apis.export_delivery_api import (ExportDeliveryListCreateView,
+                                       ExportDeliveryRetrieveUpdateDestroyView)
+from .apis.exporter_api import (ExporterListCreateView,
+                                ExporterRetrieveUpdateDestroyView)
+from .apis.gate_apis import (GateAccessControlDetailView,
+                             GateAccessControlListCreateView,
+                             InboundPreGateEntryDetailView,
+                             InboundPreGateEntryListCreateView,
+                             OutboundGateExitDetailView,
+                             OutboundGateExitListCreateView)
+from .apis.invoice_apis import (InvoicePostingReportDetailView,
+                                PostExportInvoiceCreateView,
+                                PostPaymentCreateView)
+from .apis.login_api import (ChangePasswordView, LoginView, LogoutView,
+                             MyTokenObtainPairView, RecoverPasswordView)
+from .apis.register_api import RegisterView
+from .apis.truck_apis import (TruckQueueManagementDetailView,
+                              TruckQueueManagementListCreateView,
+                              get_queue_metrics)
 
 urlpatterns = [
     #auth endpoints
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(),name='token_obtain_pair'),
+    path('logout/', LogoutView.as_view(),name='logout'),
     path('change-password/', ChangePasswordView.as_view(), name='change_password'),
     path('recover-password/', RecoverPasswordView.as_view(), name='recover_password'),
     #container endpoint

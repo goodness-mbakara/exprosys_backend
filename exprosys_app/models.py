@@ -48,6 +48,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
 
     # from the setting screen
+    profile_picture = models.ImageField(upload_to='profile', blank =True, null = True)
     gender = models.CharField(max_length=100, blank=True, null=True)
     language = models.CharField(max_length=100, blank=True, null=True)
     display_name = models.CharField(max_length=200, blank=True, null=True)
@@ -61,14 +62,18 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-class JWTClientInfo(models.Model):
-    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='jwt_client_info')
-    access_time = models.DateTimeField(auto_now_add=True)
+class UserSession(models.Model):
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name = 'sessions')
     device = models.CharField(max_length=255)
     location = models.CharField(max_length=255, null=True, blank=True)
+    browser = models.CharField(max_length=255)
+    operating_system = models.CharField(max_length=255)
+    time_of_entry = models.DateTimeField(auto_now_add=True)
+    session_token = models.CharField(max_length=255, unique=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.user.email} - {self.access_time}"
+        return f"{self.user} - {self.device} - {self.time_of_entry}"
 
 class Container(models.Model):
     CONTAINER_SIZES = [("20", "20 feet"), ("40", "40 feet")]

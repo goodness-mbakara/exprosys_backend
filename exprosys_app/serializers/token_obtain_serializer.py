@@ -1,10 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
-from django_user_agents.utils import get_user_agent
+from django.utils import timezone
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
+from user_agents import parse
 
-from ..models import JWTClientInfo
+from ..models import UserSession
 
 User = get_user_model()
 
@@ -19,28 +21,41 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Add custom claims to the token
         token["username"] = user.username
         token["email"] = user.email
-        
-    # def validate(self, attrs):
-    #     data = super().validate(attrs)
-
-    #     request = self.context.get("request")
-    #     if request:
-    #         ip = request.META.get('REMOTE_ADDR')
-    #         # Log the login attempt with the IP address
-    #         print(f"Login attempt from IP: {ip}")
-    #         user_agent = get_user_agent(request)
-    #         device = user_agent.device.family
-    #         location = request.META.get("HTTP_X_FORWARDED_FOR") or request.META.get(
-    #             "REMOTE_ADDR"
-    #         )
-
-    #         JWTClientInfo.objects.create(
-    #             user=user,
-    #              device=device,
-    #              location=location,
-    #          )
-
         return token
+    
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        # Create a user session
+        request = self.context["request"]
+        user_agent = parse(request.META.get('HTTP_USER_AGENT', ''))
+        device = f"{user_agent.device.family} {user_agent.device.brand} {user_agent.device.model}"
+        browser = f"{user_agent.browser.family} {user_agent.browser.version_string}"
+        operating_system = f"{user_agent.os.family} {user_agent.os.version_string}"
+        location = request.META.get('REMOTE_ADDR')  # In production, use a proper geolocation service
+
+        user = self.user
+
+        # Use the access token for session token
+        refresh = RefreshToken.for_user(user)
+        session_token = str(refresh.access_token)
+
+        UserSession.objects.create(
+            user=user,
+            device=device,
+            location=location,
+            browser=browser,
+            operating_system=operating_system,
+            session_token=session_token,
+            time_of_entry=timezone.now()
+        )
+
+        data["refresh"] = str(refresh)
+        data["access"] = session_token
+        data["username"] = user.username
+        data["email"] = user.email
+
+        return data
 
 
 class ChangePasswordSerializer(serializers.Serializer):

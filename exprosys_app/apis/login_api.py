@@ -56,7 +56,27 @@ class MyTokenObtainPairView(TokenObtainPairView):
 class LoginView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
     permission_classes = [AllowAny]
+    
+class LogoutView(generics.APIView):
+    permission_classes = (IsAuthenticated,)
 
+    def post(self, request):
+        token = request.data.get('refresh_token')
+        if not token:
+            return Response({"detail": "Refresh token is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            refresh_token = RefreshToken(token)
+            refresh_token.blacklist()
+
+            session_token = request.data.get('access_token')
+            if session_token:
+                session = UserSession.objects.get(session_token=token, user=request.user)
+                session.is_active = False  # Mark session as inactive
+                session.delete()
+            return Response({"detail": "Logged out successfully."}, status=status.HTTP_200_OK)
+        except UserSession.DoesNotExist:
+            return Response({"detail": "Session not found."}, status=status.HTTP_404_NOT_FOUND)
 
 class ChangePasswordView(generics.UpdateAPIView):
     queryset = User.objects.all()
