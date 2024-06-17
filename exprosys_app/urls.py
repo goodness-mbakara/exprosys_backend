@@ -38,12 +38,15 @@ from .apis.register_api import RegisterView
 from .apis.truck_apis import (TruckQueueManagementDetailView,
                               TruckQueueManagementListCreateView,
                               get_queue_metrics)
+from .apis.user_profile_apis import CustomUserDetailView, UserSessionDetailView
 
 urlpatterns = [
     #auth endpoints
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(),name='token_obtain_pair'),
     path('logout/', LogoutView.as_view(),name='logout'),
+    path('user-profile/', CustomUserDetailView.as_view(), name = 'user-profile'),
+    path('user-session/<int:pk>/', UserSessionDetailView.as_view(), name = 'user-session'),
     path('change-password/', ChangePasswordView.as_view(), name='change_password'),
     path('recover-password/', RecoverPasswordView.as_view(), name='recover_password'),
     #container endpoint

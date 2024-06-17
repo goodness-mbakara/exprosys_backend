@@ -32,7 +32,15 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         device = f"{user_agent.device.family} {user_agent.device.brand} {user_agent.device.model}"
         browser = f"{user_agent.browser.family} {user_agent.browser.version_string}"
         operating_system = f"{user_agent.os.family} {user_agent.os.version_string}"
-        location = request.META.get('REMOTE_ADDR')  # In production, use a proper geolocation service
+        ip_address = request.META.get('REMOTE_ADDR', '127.0.0.1')
+        location = "Unknown"
+        try:
+            response = requests.get(f'http://ipinfo.io/{ip_address}/json')
+            if response.status_code == 200:
+                location_data = response.json()
+                location = f"{location_data.get('city', 'Unknown')}, {location_data.get('region', 'Unknown')}, {location_data.get('country', 'Unknown')}"
+        except Exception as e:
+            print(f"Error fetching location data: {e}")
 
         user = self.user
 
